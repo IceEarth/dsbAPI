@@ -3,9 +3,9 @@ package dsb
 import plan.RepresentationPlan
 import java.time.Duration
 
-class DSB (val username: String?,
-           val password: String?,
-           val reputationsCycle: Duration?,){
+class DSB (val username: String,
+           val password: String,
+           val reputationsCycle: Duration?){
 
 
     fun readRepresentationPlans(){
@@ -14,6 +14,9 @@ class DSB (val username: String?,
 
 
     //TODO add Methods and Attributes
+
+
+
 
     data class Builder(var username: String? = null,
                        var password: String? = null,
@@ -27,7 +30,7 @@ class DSB (val username: String?,
         fun build(): DSB {
             requireNotNull(username){"username must not be null"}
             requireNotNull(password){"password must not be null"}
-            return DSB(username, password, reputationsCycle)
+            return DSB(username!!, password!!, reputationsCycle)
         }
 
     }

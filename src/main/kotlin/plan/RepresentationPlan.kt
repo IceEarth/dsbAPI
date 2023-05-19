@@ -24,4 +24,18 @@ data class RepresentationPlan(private val date: Date, private val groupEntries: 
         result = 31 * result + (groupEntries?.contentHashCode() ?: 0)
         return result
     }
+
+    data class Builder(var date: Date? = null,
+                       var groupDataEntries: ArrayList<GroupData> = ArrayList()){
+
+        fun date(date: Date) = apply { this.date = date }
+
+        fun addData(groupData: GroupData) = apply { this.groupDataEntries.add(groupData) }
+
+        fun build(): RepresentationPlan {
+            requireNotNull(date){"date must not be null"}
+            return RepresentationPlan(date!!, groupDataEntries.toTypedArray())
+        }
+
+    }
 }

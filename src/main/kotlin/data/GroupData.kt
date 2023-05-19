@@ -19,4 +19,21 @@ data class GroupData(val groupID: String, val groupEntries: Array<GroupEntry>) {
         result = 31 * result + groupEntries.contentHashCode()
         return result
     }
+
+
+
+    data class Builder(var groupID: String? = null,
+            var groupEntries: ArrayList<GroupEntry> = ArrayList()){
+
+
+        fun groupID(groupID: String) = apply{ this.groupID = groupID}
+
+        fun addGroupEntry(groupEntry: GroupEntry) = apply { this.groupEntries.add(groupEntry) }
+
+
+        fun build(): GroupData{
+            requireNotNull(groupID){"groupID must not be null"}
+            return GroupData(groupID!!, groupEntries.toTypedArray())
+        }
+    }
 }

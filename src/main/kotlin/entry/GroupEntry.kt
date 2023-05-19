@@ -10,4 +10,29 @@ package entry
  * @param text: Ein zusätzlicher Text der hinzugefügt werden kann
  * */
 
-data class GroupEntry(val hour: Int, val teacher: String, val subject: String, val room: String?, val text: String?)
+data class GroupEntry(val hour: Int, val teacher: String, val subject: String, val room: String?, val text: String?){
+
+    data class Builder(var hour: Int? = null,
+            var teacher: String? = null,
+            var subject: String? = null,
+            var room: String? = null,
+            var text: String? = null){
+
+
+        fun hour(hour: Int) = apply { this.hour = hour }
+        fun teacher(teacher: String) = apply { this.teacher = teacher }
+
+        fun subject(subject: String) = apply { this.subject = subject }
+
+        fun room(room: String) = apply { this.room = room }
+
+        fun text(text: String) = apply { this.text = text }
+
+        fun build(): GroupEntry {
+            requireNotNull(hour) { "hour must not be null" }
+            requireNotNull(teacher) { "teacher must not be null" }
+            requireNotNull(subject) { "subject must not be null" }
+            return GroupEntry(hour!!, teacher!!, subject!!, room, text)
+        }
+    }
+}
