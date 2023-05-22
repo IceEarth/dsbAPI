@@ -1,9 +1,16 @@
-package plan
+package dsb.model
 
-import data.GroupData
+import dsb.model.GroupData.Builder
 import java.util.Date
 
-data class RepresentationPlan(private val date: Date, private val groupEntries: Array<GroupData>?) {
+/**
+ * [RepresentationPlan] ist für die Speicherung eines Plans für einen ganzen Tag zuständig.
+ *
+ * @param date Datum des Plans
+ * @param groupEntries Einträge der Klassen die an diesem Tag eine Vertretung haben
+ *
+ * */
+data class RepresentationPlan(val date: Date, val groupEntries: Array<GroupData>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -25,6 +32,7 @@ data class RepresentationPlan(private val date: Date, private val groupEntries: 
         return result
     }
 
+    /**[Builder] ist eine Building Klasse um eine Instanz von [RepresentationPlan] einfach und übersichtlich zu erstellen*/
     data class Builder(var date: Date? = null,
                        var groupDataEntries: ArrayList<GroupData> = ArrayList()){
 

@@ -1,17 +1,24 @@
-package entry
+package dsb.model
+
+import dsb.model.GroupData.Builder
 
 /**
- * Eine Data-Klasse um die Werte von einem Eintrag zu speichern
+ * [GroupEntry] ist eine Data-Klasse um die Werte von einem Eintrag zu speichern
  *
- * @param hour: Die Stunde in der die Vertretung stattfindet (Nicht Nullable!)
- * @param teacher: Der Lehrer der die Stunde vertritt (Nicht Nullable!)
- * @param subject: Das Fach in dem die Vertretung stattfindet (Nicht Nullable!)
- * @param room: Der Raum in dem die Vertretung stattfindet
- * @param text: Ein zusätzlicher Text der hinzugefügt werden kann
+ * @param hour Die Stunde in der die Vertretung stattfindet (Nicht Nullable!)
+ * @param teacher Der Lehrer der die Stunde vertritt (Nicht Nullable!)
+ * @param subject Das Fach in dem die Vertretung stattfindet (Nicht Nullable!)
+ * @param room Der Raum in dem die Vertretung stattfindet
+ * @param text Ein zusätzlicher Text der hinzugefügt werden kann
  * */
 
 data class GroupEntry(val hour: Int, val teacher: String, val subject: String, val room: String?, val text: String?){
 
+    /**[Builder] ist eine Building Klasse um eine Instanz von [GroupEntry] einfach und übersichtlich zu erstellen*/
+
+    override fun toString(): String {
+        return "Hour: $hour\nTeacher: $teacher\nSubject: $subject\nRoom: $room\nText: $text"
+    }
     data class Builder(var hour: Int? = null,
             var teacher: String? = null,
             var subject: String? = null,
