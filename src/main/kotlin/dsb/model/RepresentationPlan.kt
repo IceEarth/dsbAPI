@@ -1,16 +1,15 @@
 package dsb.model
 
-import dsb.model.GroupData.Builder
 import java.util.Date
 
 /**
  * [RepresentationPlan] ist für die Speicherung eines Plans für einen ganzen Tag zuständig.
  *
  * @param date Datum des Plans
- * @param groupEntries Einträge der Klassen die an diesem Tag eine Vertretung haben
+ * @param data Einträge der Klassen die an diesem Tag eine Vertretung haben
  *
  * */
-data class RepresentationPlan(val date: Date, val groupEntries: Array<GroupData>) {
+data class RepresentationPlan(val date: Date, val data: Array<GroupData>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -18,17 +17,17 @@ data class RepresentationPlan(val date: Date, val groupEntries: Array<GroupData>
         other as RepresentationPlan
 
         if (date != other.date) return false
-        if (groupEntries != null) {
-            if (other.groupEntries == null) return false
-            if (!groupEntries.contentEquals(other.groupEntries)) return false
-        } else if (other.groupEntries != null) return false
+        if (data != null) {
+            if (other.data == null) return false
+            if (!data.contentEquals(other.data)) return false
+        } else if (other.data != null) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = date.hashCode()
-        result = 31 * result + (groupEntries?.contentHashCode() ?: 0)
+        result = 31 * result + (data?.contentHashCode() ?: 0)
         return result
     }
 
