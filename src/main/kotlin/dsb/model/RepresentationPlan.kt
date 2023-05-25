@@ -9,7 +9,7 @@ import java.util.Date
  * @param data Einträge der Klassen die an diesem Tag eine Vertretung haben
  *
  * */
-data class RepresentationPlan(val date: Date, val data: Array<GroupData>) {
+data class RepresentationPlan internal constructor(val date: Date, val data: Array<GroupData>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -32,7 +32,7 @@ data class RepresentationPlan(val date: Date, val data: Array<GroupData>) {
     }
 
     /**[Builder] ist eine Building Klasse um eine Instanz von [RepresentationPlan] einfach und übersichtlich zu erstellen*/
-    data class Builder(var date: Date? = null,
+    internal data class Builder(var date: Date? = null,
                        var groupDataEntries: ArrayList<GroupData> = ArrayList()){
 
         fun date(date: Date) = apply { this.date = date }

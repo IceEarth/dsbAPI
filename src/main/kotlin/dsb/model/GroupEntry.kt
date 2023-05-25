@@ -12,14 +12,14 @@ import dsb.model.GroupData.Builder
  * @param text Ein zusätzlicher Text der hinzugefügt werden kann
  * */
 
-data class GroupEntry(val hour: Int, val teacher: String, val subject: String, val room: String?, val text: String?){
+data class GroupEntry internal constructor(val hour: Int, val teacher: String, val subject: String, val room: String?, val text: String?){
 
     /**[Builder] ist eine Building Klasse um eine Instanz von [GroupEntry] einfach und übersichtlich zu erstellen*/
 
     override fun toString(): String {
         return "Hour: $hour\nTeacher: $teacher\nSubject: $subject\nRoom: $room\nText: $text"
     }
-    data class Builder(var hour: Int? = null,
+    internal data class Builder(var hour: Int? = null,
             var teacher: String? = null,
             var subject: String? = null,
             var room: String? = null,

@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EventManager {
+class EventHandler {
 
     private val kotlinListeners: MutableMap<String, MutableList<suspend (DSBEvent) -> Unit>> = mutableMapOf()
     private val javaListeners = ArrayList<DSBEventListener>()
@@ -14,8 +14,7 @@ class EventManager {
         notifyJavaListeners(event)
         notifyKotlinListeners(event)
     }
-
-
+    
     private fun notifyJavaListeners(event: DSBEvent){
         val eventType = event.javaClass.simpleName.removeSuffix("Event")
         javaListeners.forEach{

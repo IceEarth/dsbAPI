@@ -1,4 +1,4 @@
-package json.data
+package dsb.json
 
 import com.google.gson.Gson
 import java.io.File
@@ -11,7 +11,7 @@ import java.lang.reflect.Type
  *
  * @param file Die Datei, in der die JSON-Daten gespeichert werden.
  */
-open class JsonData<T>(private val file: File) {
+internal open class JsonData<T> (private val file: File) {
     private val gson = Gson()
     private val type: Type
 

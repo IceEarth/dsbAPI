@@ -1,9 +1,12 @@
 package dsb
 
+import dsb.change.ChangesRemoved
 import dsb.event.DSBEvent
 import dsb.event.listener.DSBEventListener
-import dsb.event.manager.EventManager
+import dsb.event.manager.EventHandler
 import dsb.model.RepresentationPlan
+import dsb.request.RepresentationPlanDataReader
+import dsb.request.ServerHelloRequest
 import dsb.settings.Settings
 
 
@@ -14,20 +17,25 @@ import dsb.settings.Settings
  * @property password Passwort muss angegeben werden, da dieser den Login bei https://www.dsbmobile.de/ nötig ist
  * @property settings optional: Einstellungen für das Verhalten von Speicherung, etc.
  * */
-class DSB (
+class DSB internal constructor(
     private val username: String,
     private val password: String,
     private val settings: Settings){
 
+    //Attribute
+    private val serverHello = ServerHelloRequest(username, password)
+    var representationPlans = RepresentationPlanDataReader(serverHello).representationPlans
+
+
     //Event-Handling
     /**
-     * [eventListeners] ist für die Speicherung der Event-Listeners zuständig und wird somit für die Methoden [on] und [emit] gebraucht.
+     * [events] ist für die Speicherung der Event-Listener zuständig.
     */
-    val events = EventManager()
+    val events = EventHandler()
 
     /**
      * [on] ist dafür da, um ein auf ein Event zu listen.
-     * Das heißt, dass alles was in der DSB#on<DSBEvent>{...} in den Klammern steht als Methode gesehen wird, um wieder in [emit] ausgeführt werden zu können.
+     * Das heißt, dass alles was in der DSB#on<DSBEvent>{...} in den Klammern steht als Methode gesehen wird, um bei einem EventCall ausgeführt werden zu können.
      * Der Listener wird beim Ausführen der Methode [on] zum [events] hinzugefügt.
      * */
     inline fun <reified T : DSBEvent> on(noinline listener: suspend T.() -> Unit) {
@@ -48,15 +56,15 @@ class DSB (
         events.removeJavaListeners(*listeners)
     }
 
-    @Deprecated("will be removed... just for testing", ReplaceWith("events.notifyEvents(event)"))
-    fun emit(event: DSBEvent){
-        events.notifyEvents(event)
-    }
+
+
+
 
 
     //...
     fun readRepresentationPlans(){
-        TODO()
+        val removed = ChangesRemoved(emptyArray(), emptyArray()).getChangeEvents()
+
     }
 
 

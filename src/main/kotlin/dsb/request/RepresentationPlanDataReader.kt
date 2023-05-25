@@ -10,15 +10,19 @@ import org.jsoup.nodes.Document
 import java.net.URL
 
 
-class RepresentationPlanDataReader(private val serverHello: ServerHello) {
-    lateinit var representationPlans: Array<RepresentationPlan>
+internal class RepresentationPlanDataReader (private val serverHello: ServerHelloRequest) {
+    var representationPlans: Array<RepresentationPlan>? = null
         private set
+        /**Holt sich immer die Daten neu und gibt diese dann zurück*/
+        get() {
+            refreshData()
+            return field
+        }
 
-    init {
-        refreshData()
-    }
 
-    fun refreshData(){
+
+    /**Aktualisieren der Daten der representationPlans*/
+    private fun refreshData(){
         this.representationPlans = serverHello.urls!!.map { getRepresentationPlan(it) }.toTypedArray()
 
     }
@@ -45,7 +49,6 @@ class RepresentationPlanDataReader(private val serverHello: ServerHello) {
         /**Parsen des document(s) bei Schiefgehen: wird eine [NullPointerException] gethrowed*/
         val document: Document = Jsoup.parse(response.body!!.string()) ?: throw NullPointerException("There occurred an error when getting the RepresentationPlans... HTML-Request is empty!")
 
-        println(document)
         return document
     }
 
@@ -73,36 +76,33 @@ class RepresentationPlanDataReader(private val serverHello: ServerHello) {
         planBuilder.date(date!!)
 
         /**Iteration durch die Tabelle table*/
-        for((i, column) in table.withIndex()){
-            println("el" + column.getElementById("td")?.allElements?.get(0))
-            println("i: $i")
-            println("column_size: " + column.childrenSize())
+        for((i, columnElement) in table.withIndex()){
 
-            TODO("fixme!!! Speicherung funktioniert noch nicht...")
-
+            /**Die Zeile column bekommen...*/
+            val column = columnElement.select("td")
 
             /**Wenn in column nur 1 Element ist, ist es die Klasse → die Groupdata dem [RepresentationPlan.Builder] hinzufügen + neuen [GroupData.Builder] anlegen */
-            if(column.childrenSize() == 1){
-                val groupID = column.allElements[0].html()
+            if(column.size == 1){
+                val groupID = column[0].text()
                 /**Bei der ersten Iteration soll noch nichts gespeichert werden*/
                 if(i != 0){
                     planBuilder.addData(dataBuilder.build())
                     dataBuilder = GroupData.Builder()
                 }
+                /**Setzten der GroupID*/
                 dataBuilder.groupID(groupID)
 
             /**Wenn in column 5 Elemente sind, ist es ein Datensatz → einen Entry zum dataBuilder hinzufügen*/
-            }else if(column.childrenSize() == 5){
+            }else if(column.size == 5){
 
                 /**Wenn ein Eintrag von hour = "1 - 2" (z.B.), sollen trotzdem 2 Einträge (i. d. F.) erstellt werden... Deswegen auch die Iteration*/
-                println(column.allElements[0].html())
-                val hours = DataUtil.getRange(column.allElements[0].html().toString())
+                val hours = DataUtil.getRange(column[0].text())
 
                 /**Setze alle restliche Werte für die Übersicht*/
-                val teacher = column.allElements[1].html()
-                val subject = column.allElements[2].html()
-                val room = column.allElements[3].html()
-                val text = column.allElements[4].html()
+                val teacher = column[1].text()
+                val subject = column[2].text()
+                val room = column[3].text()
+                val text = column[4].text()
 
                 /**Iteration wie vorher erwähnt um bei für jede hour einen einzelnen Eintrag zu setzten*/
                 for(hour in hours){

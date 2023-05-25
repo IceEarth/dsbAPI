@@ -1,12 +1,13 @@
-package json.data
+package dsb.json.dataHandling
 
 import com.sun.jna.StringArray
+import dsb.json.JsonData
 import java.io.File
 
 /**
  * [JSONGroupIDData] ist eine Klasse um die ganzen GroupIDs vom Format StringArray aus einer JSON-File zu lesen und zu schreiben
  *
  * */
-class JSONGroupIDData(file: File) : JsonData<StringArray>(file){
+internal class JSONGroupIDData internal constructor(file: File) : JsonData<StringArray>(file){
 
 }

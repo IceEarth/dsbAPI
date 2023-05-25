@@ -7,7 +7,7 @@ package dsb.model
  * @param groupID Klassenname z.B. 5a, 7c, ...
  * @param groupEntries Einträge der Klasse bestehend aus [GroupEntry]s
  * */
-data class GroupData(val groupID: String, val groupEntries: Array<GroupEntry>) {
+data class GroupData internal constructor(val groupID: String, val groupEntries: Array<GroupEntry>) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -38,7 +38,7 @@ data class GroupData(val groupID: String, val groupEntries: Array<GroupEntry>) {
 
 
     /**[Builder] ist eine Building Klasse um eine Instanz von [GroupData] einfach und übersichtlich zu erstellen*/
-    data class Builder(var groupID: String? = null,
+    internal data class Builder(var groupID: String? = null,
             var groupEntries: ArrayList<GroupEntry> = ArrayList()){
 
 
