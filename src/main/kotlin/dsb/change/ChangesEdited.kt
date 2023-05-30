@@ -8,7 +8,7 @@ import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 
 class ChangesEdited internal constructor(new: Array<RepresentationPlan>, old: Array<RepresentationPlan>) : ChangeData<DSBAddEvent>(old, new) {
-    override val newestFirst: Boolean = true
+
 
     override fun getChangesOfEntry(
         newEntry: GroupEntry,
@@ -20,13 +20,13 @@ class ChangesEdited internal constructor(new: Array<RepresentationPlan>, old: Ar
         if(newEntry != oldEntry && oldEntry != null){
             val editTypes: ArrayList<DSBEditEvent.EditType> = ArrayList()
 
-            if(newEntry.room != oldEntry?.room){
+            if(newEntry.room != oldEntry.room){
                 editTypes.add(DSBEditEvent.EditType.ROOM_EDITED)
             }
-            if(newEntry.teacher != oldEntry?.teacher){
+            if(newEntry.teacher != oldEntry.teacher){
                 editTypes.add(DSBEditEvent.EditType.TEACHER_EDITED)
             }
-            if(newEntry.text != oldEntry?.text){
+            if(newEntry.text != oldEntry.text){
                 editTypes.add(DSBEditEvent.EditType.TEXT_EDITED)
             }
 

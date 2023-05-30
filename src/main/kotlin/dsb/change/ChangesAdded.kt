@@ -6,8 +6,8 @@ import dsb.model.GroupData
 import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 
-open class ChangesAdded internal constructor(new: Array<RepresentationPlan>, old: Array<RepresentationPlan>) : ChangeData<DSBAddEvent>(old, new) {
-    override val newestFirst: Boolean = true
+open class ChangesAdded internal constructor(new: Array<RepresentationPlan>, old: Array<RepresentationPlan>) : ChangeData<DSBAddEvent>(new, old) {
+
 
     override fun getChangesOfEntry(
         newEntry: GroupEntry,

@@ -7,8 +7,8 @@ import dsb.model.RepresentationPlan
 import kotlin.reflect.KProperty1
 
 abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlans: Array<RepresentationPlan>, private val oldPlans: Array<RepresentationPlan>) {
-    /**Gibt an, ob die neuesten Pläne wirklich als Neuste betrachtet werden sollen oder eben nicht (ist für [ChangesRemoved_OLD] wichtig, da dort quasi dasselbe wie bei [ChangesAdded] passiert, nur das die alten Einträge als neues betrachtet werden)*/
-    abstract val newestFirst: Boolean
+    /**Gibt an, ob die neuesten Pläne wirklich als Neuste betrachtet werden sollen oder eben nicht (ist für [ChangesRemoved] wichtig, da dort quasi dasselbe wie bei [ChangesAdded] passiert, nur das die alten Einträge als neues betrachtet werden)*/
+    //abstract val newestFirst: Boolean
 
     /**Gibt die Änderungsereignisse zurück*/
     open fun getChangeEvents(): Array<DSBEvent> {
@@ -31,8 +31,7 @@ abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlan
             return emptyArray()
         }
 
-        val groupDataReferences =
-            if (newestFirst) getGroupDataReferences(newPlan.data, oldPlan.data) else getGroupDataReferences(oldPlan.data, newPlan.data)
+        val groupDataReferences = getGroupDataReferences(newPlan.data, oldPlan.data)
 
         for (newToOldData in groupDataReferences) {
             val newGroupEntries = newToOldData.key.groupEntries
