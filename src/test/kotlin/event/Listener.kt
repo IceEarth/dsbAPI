@@ -10,6 +10,6 @@ class Listener : DSBEventListener {
     }
 
     override fun onDSBEdit(event: DSBEditEvent) {
-        println(event.getMessage())
+
     }
 }

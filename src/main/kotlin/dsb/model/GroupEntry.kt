@@ -19,6 +19,10 @@ data class GroupEntry internal constructor(val hour: Int, val teacher: String, v
     override fun toString(): String {
         return "Hour: $hour\nTeacher: $teacher\nSubject: $subject\nRoom: $room\nText: $text"
     }
+
+    @Suppress("only-testing")
+
+    fun toTrimmedString(): String = toString().replace("\n", " ")
     internal data class Builder(var hour: Int? = null,
             var teacher: String? = null,
             var subject: String? = null,

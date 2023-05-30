@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import java.net.URL
 
 
@@ -93,8 +94,7 @@ internal class RepresentationPlanDataReader (private val serverHello: ServerHell
                 dataBuilder.groupID(groupID)
 
             /**Wenn in column 5 Elemente sind, ist es ein Datensatz → einen Entry zum dataBuilder hinzufügen*/
-            }else if(column.size == 5){
-
+            }else if (column.size == 5){
                 /**Wenn ein Eintrag von hour = "1 - 2" (z.B.), sollen trotzdem 2 Einträge (i. d. F.) erstellt werden... Deswegen auch die Iteration*/
                 val hours = DataUtil.getRange(column[0].text())
 
@@ -120,9 +120,16 @@ internal class RepresentationPlanDataReader (private val serverHello: ServerHell
             }
         }
 
+        planBuilder.addData(dataBuilder.build())
+
+
+
+
+
         return planBuilder.build()
 
 
 
     }
 }
+

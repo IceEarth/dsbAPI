@@ -9,7 +9,7 @@ import java.util.Date
  * @param data Einträge der Klassen die an diesem Tag eine Vertretung haben
  *
  * */
-data class RepresentationPlan internal constructor(val date: Date, val data: Array<GroupData>) {
+data class RepresentationPlan internal constructor(var date: Date, val data: Array<GroupData>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -1,8 +1,17 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <JSON>
+      <option name="SPACE_BEFORE_COLON" value="true" />
+      <option name="PROPERTY_ALIGNMENT" value="1" />
+    </JSON>
     <JetCodeStyleSettings>
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
+    <codeStyleSettings language="JSON">
+      <option name="KEEP_BLANK_LINES_IN_CODE" value="10" />
+      <option name="SPACE_BEFORE_COMMA" value="true" />
+      <option name="WRAP_ON_TYPING" value="1" />
+    </codeStyleSettings>
     <codeStyleSettings language="kotlin">
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </codeStyleSettings>

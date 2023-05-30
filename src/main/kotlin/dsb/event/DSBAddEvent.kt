@@ -5,4 +5,4 @@ import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 import java.util.Date
 
-data class DSBAddEvent(private val added: GroupEntry, private val groupData: GroupData, private val representationPlan: RepresentationPlan) : DSBEvent
+data class DSBAddEvent(val added: GroupEntry, val groupData: GroupData, val representationPlan: RepresentationPlan) : DSBEvent

@@ -1,6 +1,6 @@
 package dsb
 
-import dsb.change.ChangesRemoved
+import dsb.change.ChangesRemoved_OLD
 import dsb.event.DSBEvent
 import dsb.event.listener.DSBEventListener
 import dsb.event.manager.EventHandler
@@ -63,7 +63,7 @@ class DSB internal constructor(
 
     //...
     fun readRepresentationPlans(){
-        val removed = ChangesRemoved(emptyArray(), emptyArray()).getChangeEvents()
+        val removed = ChangesRemoved_OLD(emptyArray(), emptyArray()).getChangeEvents()
 
     }
 

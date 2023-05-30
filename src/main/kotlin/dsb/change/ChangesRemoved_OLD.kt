@@ -2,12 +2,13 @@ package dsb.change
 
 import dsb.event.DSBAddEvent
 import dsb.event.DSBEvent
+import dsb.event.DSBRemoveEvent
 import dsb.model.GroupData
 import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 
-open class ChangesAdded internal constructor(new: Array<RepresentationPlan>, old: Array<RepresentationPlan>) : ChangeData<DSBAddEvent>(old, new) {
-    override val newestFirst: Boolean = true
+class ChangesRemoved_OLD (new: Array<RepresentationPlan>, old: Array<RepresentationPlan>) : ChangeData<DSBRemoveEvent>(old, new) {
+    override val newestFirst: Boolean = false
 
     override fun getChangesOfEntry(
         newEntry: GroupEntry,
