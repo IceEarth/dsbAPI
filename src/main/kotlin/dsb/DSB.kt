@@ -1,5 +1,7 @@
 package dsb
 
+import dsb.change.ChangesAdded
+import dsb.change.ChangesEdited
 import dsb.change.ChangesRemoved
 import dsb.event.DSBEvent
 import dsb.event.listener.DSBEventListener
@@ -29,14 +31,14 @@ class DSB internal constructor(
 
     //Event-Handling
     /**
-     * [events] ist für die Speicherung der Event-Listener zuständig.
+     * [eventHandler] ist für die Speicherung der Event-Listener zuständig.
     */
-    val events = EventHandler()
+    val eventHandler = EventHandler()
 
     /**
      * [on] ist dafür da, um ein auf ein Event zu listen.
      * Das heißt, dass alles was in der DSB#on<DSBEvent>{...} in den Klammern steht als Methode gesehen wird, um bei einem EventCall ausgeführt werden zu können.
-     * Der Listener wird beim Ausführen der Methode [on] zum [events] hinzugefügt.
+     * Der Listener wird beim Ausführen der Methode [on] zum [eventHandler] hinzugefügt.
      * */
     inline fun <reified T : DSBEvent> on(noinline listener: suspend T.() -> Unit) {
         val eventType = T::class.java.simpleName
@@ -45,26 +47,32 @@ class DSB internal constructor(
                 listener.invoke(event)
             }
         }
-        events.addKotlinListener(eventType, eventListener)
+        eventHandler.addKotlinListener(eventType, eventListener)
     }
 
     fun addListeners(vararg listeners: DSBEventListener) {
-        events.addJavaListeners(*listeners)
+        eventHandler.addJavaListeners(*listeners)
     }
 
     fun removeListeners(vararg listeners: DSBEventListener){
-        events.removeJavaListeners(*listeners)
+        eventHandler.removeJavaListeners(*listeners)
     }
 
 
+    //Attribute
+    lateinit var plans: Array<RepresentationPlan>
 
 
 
 
+    
     //...
-    fun readRepresentationPlans(){
+    fun callNewEvents(){
         val removed = ChangesRemoved(emptyArray(), emptyArray()).getChangeEvents()
+        val added = ChangesAdded(emptyArray(), emptyArray()).getChangeEvents()
+        val edited = ChangesEdited(emptyArray(), emptyArray()).getChangeEvents()
 
+        eventHandler.callEvents(*removed, *added, *edited)
     }
 
 

@@ -28,8 +28,9 @@ abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlan
 
         // Wenn oldPlan null ist, werden keine Events zurückgegeben
         if (oldPlan == null) {
-            return emptyArray()
+            return getNullEntries(newPlan)
         }
+
 
         val groupDataReferences = getGroupDataReferences(newPlan.data, oldPlan.data)
 
@@ -65,6 +66,8 @@ abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlan
         groupData: GroupData,
         representationPlan: RepresentationPlan
     ): DSBEvent?
+
+    protected abstract fun getNullEntries(newPlan: RepresentationPlan): Array<DSBEvent>
 
     /**Hilfsmethode zum Erstellen der Referenzen zwischen Plänen*/
     private fun getPlanReferences(): Map<RepresentationPlan, RepresentationPlan?> {

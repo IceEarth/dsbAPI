@@ -10,7 +10,13 @@ class EventHandler {
 
     private val kotlinListeners: MutableMap<String, MutableList<suspend (DSBEvent) -> Unit>> = mutableMapOf()
     private val javaListeners = ArrayList<DSBEventListener>()
-    fun notifyEvents(event: DSBEvent){
+
+    fun callEvents(vararg events: DSBEvent){
+        for(event in events){
+            callEvent(event)
+        }
+    }
+    private fun callEvent(event: DSBEvent){
         notifyJavaListeners(event)
         notifyKotlinListeners(event)
     }

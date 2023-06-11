@@ -34,4 +34,10 @@ class ChangesEdited internal constructor(new: Array<RepresentationPlan>, old: Ar
         }
         return null
     }
+
+    override fun getNullEntries(newPlan: RepresentationPlan): Array<DSBEvent> {
+        return emptyArray()
+    }
+
+
 }
