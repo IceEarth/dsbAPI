@@ -1,0 +1,88 @@
+[
+  {
+    "date": "2023-05-01",
+    "groupEntries": [
+      {
+        "groupID": "Group1",
+        "groupEntries": [
+          {
+            "hour": 8,
+            "teacher": "Mr. Smith",
+            "subject": "Math",
+            "room": "A101",
+            "text": "Introduction to Algebra"
+          },
+          {
+            "hour": 9,
+            "teacher": "Ms. Johnson",
+            "subject": "English",
+            "room": "B201",
+            "text": "Literature Analysis"
+          }
+        ]
+      },
+      {
+        "groupID": "Group2",
+        "groupEntries": [
+          {
+            "hour": 10,
+            "teacher": "Mr. Brown",
+            "subject": "Science",
+            "room": "C301",
+            "text": "Chemical Reactions"
+          },
+          {
+            "hour": 11,
+            "teacher": "Ms. Davis",
+            "subject": "History",
+            "room": "D401",
+            "text": "World War II"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2023-05-02",
+    "groupEntries": [
+      {
+        "groupID": "Group1",
+        "groupEntries": [
+          {
+            "hour": 8,
+            "teacher": "Mr. Smith",
+            "subject": "Math",
+            "room": "A101",
+            "text": "Introduction to Algebra"
+          },
+          {
+            "hour": 9,
+            "teacher": "Ms. Johnson",
+            "subject": "English",
+            "room": "B201",
+            "text": "Literature Analysis"
+          }
+        ]
+      },
+      {
+        "groupID": "Group2",
+        "groupEntries": [
+          {
+            "hour": 10,
+            "teacher": "Mr. Brown",
+            "subject": "Science",
+            "room": "C301",
+            "text": "Chemical Reactions"
+          },
+          {
+            "hour": 11,
+            "teacher": "Ms. Davis",
+            "subject": "History",
+            "room": "D401",
+            "text": "World War II"
+          }
+        ]
+      }
+    ]
+  }
+]

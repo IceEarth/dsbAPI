@@ -1,0 +1,131 @@
+{
+  "Resultcode": 0,
+  "ResultStatusInfo": "",
+  "StartIndex": -1,
+  "ResultMenuItems": [
+    {
+      "Index": 0,
+      "IconLink": "",
+      "Title": "Inhalte",
+      "Childs": [
+        {
+          "Index": 0,
+          "IconLink": "https://dsbmobile.de/static/androidicons/Timetable.png",
+          "Title": "Pläne",
+          "Root": {
+            "Id": "",
+            "Date": "",
+            "Title": "",
+            "Detail": "",
+            "Tags": "",
+            "ConType": 0,
+            "Prio": 0,
+            "Index": 0,
+            "Childs": [
+              {
+                "Id": "1ec327bf-cdc8-4638-ba27-d933145a1f98",
+                "Date": "18.05.2023 02:32",
+                "Title": "SchuelerMorgen",
+                "Detail": "",
+                "Tags": "",
+                "ConType": 2,
+                "Prio": 0,
+                "Index": 0,
+                "Childs": [
+                  {
+                    "Id": "1ec327bf-cdc8-4638-ba27-d933145a1f98",
+                    "Date": "18.05.2023 02:32",
+                    "Title": "subst_001.htm",
+                    "Detail": "https://dsbmobile.de/data/9efa5355-d69d-4603-801b-bf59f7d6cb02/1ec327bf-cdc8-4638-ba27-d933145a1f98/1ec327bf-cdc8-4638-ba27-d933145a1f98.htm",
+                    "Tags": "",
+                    "ConType": 3,
+                    "Prio": 0,
+                    "Index": 0,
+                    "Childs": [],
+                    "Preview": "9efa5355-d69d-4603-801b-bf59f7d6cb02/1ec327bf-cdc8-4638-ba27-d933145a1f98/preview.png"
+                  }
+                ],
+                "Preview": ""
+              },
+              {
+                "Id": "bd59be8e-d9ab-4dff-a413-e31833590f36",
+                "Date": "18.05.2023 02:32",
+                "Title": "SchuelerHeute",
+                "Detail": "",
+                "Tags": "",
+                "ConType": 2,
+                "Prio": 0,
+                "Index": 0,
+                "Childs": [
+                  {
+                    "Id": "bd59be8e-d9ab-4dff-a413-e31833590f36",
+                    "Date": "18.05.2023 02:32",
+                    "Title": "subst_001.htm",
+                    "Detail": "https://dsbmobile.de/data/9efa5355-d69d-4603-801b-bf59f7d6cb02/bd59be8e-d9ab-4dff-a413-e31833590f36/bd59be8e-d9ab-4dff-a413-e31833590f36.htm",
+                    "Tags": "",
+                    "ConType": 3,
+                    "Prio": 0,
+                    "Index": 0,
+                    "Childs": [],
+                    "Preview": "9efa5355-d69d-4603-801b-bf59f7d6cb02/bd59be8e-d9ab-4dff-a413-e31833590f36/preview.png"
+                  }
+                ],
+                "Preview": ""
+              }
+            ],
+            "Preview": ""
+          }
+        }
+      ],
+      "Preview": ""
+    },
+    {
+      "Index": 1,
+      "IconLink": "",
+      "Title": "Sonstiges",
+      "Childs": [
+        {
+          "Index": 0,
+          "IconLink": "https://dsbmobile.de/static/androidicons/Settings.png",
+          "Title": "Einstellungen",
+          "Childs": [],
+          "MethodName": "settings",
+          "NewCount": 0,
+          "SaveLastState": false
+        },
+        {
+          "Index": 1,
+          "IconLink": "https://dsbmobile.de/static/androidicons/Feedback.png",
+          "Title": "Feedback",
+          "Childs": [],
+          "MethodName": "feedback",
+          "NewCount": 0,
+          "SaveLastState": false
+        },
+        {
+          "Index": 2,
+          "IconLink": "https://dsbmobile.de/static/androidicons/About.png",
+          "Title": "Info",
+          "Childs": [],
+          "MethodName": "about",
+          "NewCount": 0,
+          "SaveLastState": false
+        },
+        {
+          "Index": 3,
+          "IconLink": "https://dsbmobile.de/static/androidicons/Logout.png",
+          "Title": "Logout",
+          "Childs": [],
+          "MethodName": "logout",
+          "NewCount": 0,
+          "SaveLastState": false
+        }
+      ],
+      "MethodName": "",
+      "NewCount": 0,
+      "SaveLastState": true
+    }
+  ],
+  "ChannelType": 0,
+  "MandantId": "de54f696-f879-4884-b5b0-03a9384f2fcf"
+}
