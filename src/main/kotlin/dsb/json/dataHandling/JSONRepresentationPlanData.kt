@@ -1,6 +1,5 @@
 package dsb.json.dataHandling
 
-import dsb.json.JsonData
 import dsb.model.RepresentationPlan
 import java.io.File
 

@@ -19,6 +19,7 @@ data class GroupData internal constructor(val groupID: String, val groupEntries:
         return groupEntries.contentEquals(other.groupEntries)
     }
 
+
     override fun hashCode(): Int {
         var result = groupID.hashCode()
         result = 31 * result + groupEntries.contentHashCode()

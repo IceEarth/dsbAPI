@@ -18,6 +18,7 @@ class ChangesEdited internal constructor(new: Array<RepresentationPlan>, old: Ar
     ): DSBEvent? {
 
         if(newEntry != oldEntry && oldEntry != null){
+            //println("\n${oldEntry} \t\t$newEntry")
             val editTypes: ArrayList<DSBEditEvent.EditType> = ArrayList()
 
             if(newEntry.room != oldEntry.room){

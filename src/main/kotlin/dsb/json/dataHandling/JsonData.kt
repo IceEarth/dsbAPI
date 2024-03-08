@@ -1,4 +1,4 @@
-package dsb.json
+package dsb.json.dataHandling
 
 import com.google.gson.Gson
 import java.io.File

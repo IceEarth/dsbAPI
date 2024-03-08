@@ -17,7 +17,7 @@ data class GroupEntry internal constructor(val hour: Int, val teacher: String, v
     /**[Builder] ist eine Building Klasse um eine Instanz von [GroupEntry] einfach und übersichtlich zu erstellen*/
 
     override fun toString(): String {
-        return "Hour: $hour\nTeacher: $teacher\nSubject: $subject\nRoom: $room\nText: $text"
+        return "Hour: $hour\tTeacher: $teacher\tSubject: $subject\tRoom: $room\tText: $text"
     }
 
     @Suppress("only-testing")

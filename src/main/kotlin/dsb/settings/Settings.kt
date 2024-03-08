@@ -47,12 +47,12 @@ data class Settings internal constructor(
      * @property saveGroupIDs Flag, das angibt, ob Gruppen-IDs gespeichert werden sollen.
      * @property saveSubjects Flag, das angibt, ob Fächer gespeichert werden sollen.
      */
-    public data class Builder( var workingDirectory: File,
-                        var temporary: Boolean,
-                        var dataRefreshCycle: Duration,
-                        var serverHelloRequestCycle: Duration,
-                        var saveGroupIDs: Boolean,
-                        var saveSubjects: Boolean){
+    public data class Builder( var workingDirectory: File = Settings.defaults.workingDirectory,
+                        var temporary: Boolean = Settings.defaults.temporary,
+                        var dataRefreshCycle: Duration = Settings.defaults.dataRefreshCycle,
+                        var serverHelloRequestCycle: Duration = Settings.defaults.serverHelloRequestCycle,
+                        var saveGroupIDs: Boolean = Settings.defaults.saveGroupIDs,
+                        var saveSubjects: Boolean = Settings.defaults.saveSubjects){
 
         fun dataRefreshCycle(dataRefreshCycle: Duration) = apply { this.dataRefreshCycle = dataRefreshCycle }
         fun workingDirectory(workingDirectory: File) = apply { this.workingDirectory = workingDirectory }

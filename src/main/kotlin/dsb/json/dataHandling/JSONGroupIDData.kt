@@ -1,7 +1,6 @@
 package dsb.json.dataHandling
 
 import com.sun.jna.StringArray
-import dsb.json.JsonData
 import java.io.File
 
 /**

@@ -81,6 +81,8 @@ abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlan
 
     /**Hilfsmethode zum Erstellen der Referenzen zwischen Einträgen*/
     private fun getEntryReferences(newEntries: Array<GroupEntry>, oldEntries: Array<GroupEntry>?): Map<GroupEntry, GroupEntry?>{
+       hasMultipleTeachersAtSameTimeAndSubject(newEntries)
+
         return getReferences(newEntries, oldEntries){
             newEntry, oldEntry -> (newEntry.hour == oldEntry.hour && newEntry.subject == oldEntry.subject)
         }
@@ -106,6 +108,37 @@ abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlan
         return result
     }
 
+
+
+
+    private fun getDuplicationFreeEntryReferences(newEntries: Array<GroupEntry>, oldEntries: Array<GroupEntry>?): Map<GroupEntry, GroupEntry?>{
+
+
+        return emptyMap()
+    }
+
+
+
+    @Suppress("Test!!!")
+    private fun hasMultipleTeachersAtSameTimeAndSubject(groupEntries: Array<GroupEntry>): Boolean {
+        val entriesByHourAndSubject = groupEntries.groupBy { it.hour to it.subject}
+
+        for ((hourAndSubject, entries) in entriesByHourAndSubject) {
+
+            if (entries.size > 1) {
+                println(entriesByHourAndSubject)
+                // Es gibt mehrere Einträge zur gleichen Stunde und im selben Fach
+                println("Mehrere Lehrereinträge zur gleichen Zeit und im selben Fach:")
+                entries.forEach { entry ->
+                    println("Hour: ${entry.hour}, Subject: ${entry.subject}, Teacher: ${entry.teacher}")
+                }
+                return true
+            }
+        }
+
+        // Es gibt keine mehrfachen Einträge zur gleichen Zeit und im selben Fach
+        return false
+    }
 
 
 }

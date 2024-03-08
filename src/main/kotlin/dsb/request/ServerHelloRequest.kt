@@ -39,10 +39,6 @@ internal class ServerHelloRequest (username: String, password: String) {
     private val requestData = "{'req': {'Data': '$compressedParams', 'DataType': 1}}"
 
 
-
-
-
-
     var urls : Array<URL>? = null
         private set
 
@@ -51,7 +47,7 @@ internal class ServerHelloRequest (username: String, password: String) {
         refreshURLs()
     }
 
-    /**[refresh] sendet eine neue ServerHelloRequest um diese zu eventuell aktualisieren (Falls Änderungen passiert sind...)*/
+    /**[refresh] sendet eine neue ServerHelloRequest um diese zu eventuell aktualisieren (Falls Änderungen passiert sind.)*/
     fun refresh(){
         refreshURLs()
     }
@@ -64,7 +60,7 @@ internal class ServerHelloRequest (username: String, password: String) {
         /**Response zu einem JSON-Object machen*/
         val jsonOutput = gson.fromJson(response, JsonObject::class.java)
 
-        /**Der gelesene Output wird dekomprimiert und dekodiert..*/
+        /**Der gelesene Output wird dekomprimiert und dekodiert.*/
         val fileJsonObject = gson.fromJson(decompressAndDecode(jsonOutput.get("d").asString), JsonObject::class.java)
 
 

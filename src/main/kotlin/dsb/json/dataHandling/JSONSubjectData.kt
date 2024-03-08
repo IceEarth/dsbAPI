@@ -1,6 +1,5 @@
 package dsb.json.dataHandling
 
-import dsb.json.JsonData
 import java.io.File
 
 

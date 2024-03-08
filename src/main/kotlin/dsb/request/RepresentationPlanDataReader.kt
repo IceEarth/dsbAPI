@@ -14,16 +14,14 @@ import java.net.URL
 internal class RepresentationPlanDataReader (private val serverHello: ServerHelloRequest) {
     var representationPlans: Array<RepresentationPlan>? = null
         private set
-        /**Holt sich immer die Daten neu und gibt diese dann zurück*/
-        get() {
-            refreshData()
-            return field
-        }
 
+    init {
+        refresh()
+    }
 
 
     /**Aktualisieren der Daten der representationPlans*/
-    private fun refreshData(){
+    fun refresh(){
         this.representationPlans = serverHello.urls!!.map { getRepresentationPlan(it) }.toTypedArray()
 
     }
@@ -48,7 +46,7 @@ internal class RepresentationPlanDataReader (private val serverHello: ServerHell
         val response = client.newCall(request).execute()
 
         /**Parsen des document(s) bei Schiefgehen: wird eine [NullPointerException] gethrowed*/
-        val document: Document = Jsoup.parse(response.body!!.string()) ?: throw NullPointerException("There occurred an error when getting the RepresentationPlans... HTML-Request is empty!")
+        val document: Document = Jsoup.parse(response.body!!.string()) ?: throw NullPointerException("There occurred an error when requesting Representation-Plans... HTML-Request is empty!")
 
         return document
     }
