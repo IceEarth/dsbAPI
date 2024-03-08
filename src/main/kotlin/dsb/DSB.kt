@@ -103,12 +103,7 @@ class DSB internal constructor(
 
         val period = settings.serverHelloRequestCycle.toMillis()
 
-
-
         scheduler.scheduleAtFixedRate(task, period, period, TimeUnit.MILLISECONDS)
-
-
-
     }
 
     /**
@@ -130,8 +125,6 @@ class DSB internal constructor(
         }
 
         val period = settings.dataRefreshCycle.toMillis()
-
-
 
         scheduler.scheduleAtFixedRate(task, period, period, TimeUnit.MILLISECONDS)
     }

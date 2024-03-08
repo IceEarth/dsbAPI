@@ -25,12 +25,12 @@ fun main(){
 
     dsb.on<DSBEditEvent> {
         println("EDIT: " +
-                "${groupData.groupID} $newEntry")
+                " ${representationPlan.date} ${groupData.groupID} \n new: $newEntry \n what: $editTypes \n old: $oldEntry")
     }
     dsb.on<DSBAddEvent>{
-        println("ADD: ${groupData.groupID} $added")
+        println("ADD: ${representationPlan.date} ${groupData.groupID} $added")
     }
     dsb.on<DSBRemoveEvent>{
-        println("REMOVE: ${groupData.groupID} $removed")
+        println("REMOVE: ${representationPlan.date} ${groupData.groupID} $removed")
     }
 }

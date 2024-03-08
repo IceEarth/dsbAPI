@@ -7,7 +7,7 @@ import dsb.model.GroupData
 import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 
-class ChangesEdited internal constructor(new: Array<RepresentationPlan>, old: Array<RepresentationPlan>) : ChangeData<DSBAddEvent>(old, new) {
+class ChangesEdited internal constructor(new: Array<RepresentationPlan>, old: Array<RepresentationPlan>) : ChangeData<DSBAddEvent>(new, old) {
 
 
     override fun getChangesOfEntry(

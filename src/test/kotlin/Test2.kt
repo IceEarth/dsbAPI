@@ -2,25 +2,16 @@ import dsb.change.ChangesAdded
 import dsb.change.ChangesEdited
 import dsb.change.ChangesRemoved
 import dsb.event.DSBAddEvent
+import dsb.event.DSBEditEvent
 import dsb.model.GroupData
 import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 import java.util.*
 
 fun main() {
-    val classdata1 : GroupData = GroupData("9k", arrayOf(
-        GroupEntry(3, "LEUB->HOPF", "m", "E.05", "   "),
-        GroupEntry(4, "LEUB->HOPF", "m", "E.05", "   "),
-    ) )
-    val classdata2 : GroupData = GroupData("10k", arrayOf(
-        GroupEntry(4, "LEUB->HOPF", "m", "E.05", "   "),
-        GroupEntry(5, "LEUB->HOPF", "m", "E.05", "   "),
-        GroupEntry(6, "nix", "d", "x01", "")
 
-    ) )
-    val new : RepresentationPlan = RepresentationPlan(Date(), arrayOf(classdata1, classdata2))
 
-    val classdata3 : GroupData = GroupData("9k", arrayOf(
+    /*val classdata3 : GroupData = GroupData("9k", arrayOf(
         GroupEntry(3, "LEUB->HOPF", "m", "E.05", "   "),
         GroupEntry(4, "LEUB->HOPF", "m", "E.05", "   ")
     ) )
@@ -28,16 +19,27 @@ fun main() {
         GroupEntry(4, "LEUB->HOPF", "m", "E.05", "   "),
         GroupEntry(5, "LEUB->HOPF", "m", "E.05", "   ")
 
+    ) )*/
+    val classdata1 : GroupData = GroupData("9k", arrayOf(
+        GroupEntry(3, "ULMA", "m", "E.05", "Ein sehr tolles Theaterstück"),
+        GroupEntry(3, "HAEN", "m", "E.05", "Ein sehr tolles Theaterstück"),
     ) )
+    val classdata2 : GroupData = GroupData("9k", arrayOf(
+        GroupEntry(3, "ULMA", "m", "E.05", "Ein sehr tolles Theaterstück"),
+        GroupEntry(3, "HAEN", "m", "E.05", "Ein sehr tolles Theaterstück"),
+        //GroupEntry(6, "nix", "d", "x01", "")
 
-    val old : RepresentationPlan = RepresentationPlan(Date(12, 4, 4), /*arrayOf(classdata3, classdata4)*/emptyArray())
+    ) )
+    val new : RepresentationPlan = RepresentationPlan(Date(), arrayOf(classdata1))
+    val old : RepresentationPlan = RepresentationPlan(Date(), arrayOf(classdata2))
 
-    //Bei removed: Wenn input: 100; komplett andere Liste: müsste output 100 sein...
     val events = ChangesEdited(arrayOf(new), arrayOf(old)).getChangeEvents()
+
     println("Events: " + events.size)
     events.forEach {
-        it as DSBAddEvent
-        println(it.groupData.groupID + "\t" + it.added.toTrimmedString())
+        it as DSBEditEvent
+        println(it.groupData.groupID + "\t" + it.newEntry.toTrimmedString())
+
     }
 }
 

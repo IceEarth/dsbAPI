@@ -6,9 +6,7 @@ import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 import kotlin.reflect.KProperty1
 
-abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlans: Array<RepresentationPlan>, private val oldPlans: Array<RepresentationPlan>) {
-    /**Gibt an, ob die neuesten Pläne wirklich als Neuste betrachtet werden sollen oder eben nicht (ist für [ChangesRemoved] wichtig, da dort quasi dasselbe wie bei [ChangesAdded] passiert, nur das die alten Einträge als neues betrachtet werden)*/
-    //abstract val newestFirst: Boolean
+abstract class ChangeData<T : DSBEvent> internal constructor(private val firstPlans: Array<RepresentationPlan>, private val secondPlans: Array<RepresentationPlan>) {
 
     /**Gibt die Änderungsereignisse zurück*/
     open fun getChangeEvents(): Array<DSBEvent> {
@@ -23,31 +21,31 @@ abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlan
     }
 
     /**Gibt die Änderungsereignisse für einen bestimmten Plan zurück*/
-    private fun getEventsByPlans(newPlan: RepresentationPlan, oldPlan: RepresentationPlan?): Array<DSBEvent> {
+    private fun getEventsByPlans(firstPlan: RepresentationPlan, secondPlan: RepresentationPlan?): Array<DSBEvent> {
         val result: ArrayList<DSBEvent> = ArrayList()
 
-        // Wenn oldPlan null ist, werden keine Events zurückgegeben
-        if (oldPlan == null) {
-            return getNullEntries(newPlan)
+        // Wenn secondPlan null ist, werden keine Events zurückgegeben
+        if (secondPlan == null) {
+            return getNullEntries(firstPlan)
         }
 
 
-        val groupDataReferences = getGroupDataReferences(newPlan.data, oldPlan.data)
+        val groupDataReferences = getGroupDataReferences(firstPlan.data, secondPlan.data)
 
-        for (newToOldData in groupDataReferences) {
-            val newGroupEntries = newToOldData.key.groupEntries
-            val oldGroupEntries = newToOldData.value?.groupEntries
+        for (firstToOldData in groupDataReferences) {
+            val firstGroupEntries = firstToOldData.key.groupEntries
+            val secondGroupEntries = firstToOldData.value?.groupEntries
 
-            val groupData: GroupData = newToOldData.key
+            val groupData: GroupData = firstToOldData.key
 
-            val entryReferences = getEntryReferences(newGroupEntries, oldGroupEntries)
+            val entryReferences = getEntryReferences(firstGroupEntries, secondGroupEntries)
 
-            for (newToOldEntries in entryReferences) {
+            for (firstToOldEntries in entryReferences) {
                 val event = getChangesOfEntry(
-                    newEntry = newToOldEntries.key,
-                    oldEntry = newToOldEntries.value,
+                    firstEntry = firstToOldEntries.key,
+                    secondEntry = firstToOldEntries.value,
                     groupData = groupData,
-                    representationPlan = newPlan
+                    representationPlan = firstPlan
                 )
 
                 if (event != null) {
@@ -61,77 +59,102 @@ abstract class ChangeData<T : DSBEvent> internal constructor(private val newPlan
 
     /**Abstrakte Methode zur Erstellung des Änderungsereignisses für einen Eintrag*/
     protected abstract fun getChangesOfEntry(
-        newEntry: GroupEntry,
-        oldEntry: GroupEntry?,
+        firstEntry: GroupEntry,
+        secondEntry: GroupEntry?,
         groupData: GroupData,
         representationPlan: RepresentationPlan
     ): DSBEvent?
 
-    protected abstract fun getNullEntries(newPlan: RepresentationPlan): Array<DSBEvent>
+    /**
+     * Abstrakte Methode getNullEntries ist dafür wichtig, wenn in der Überprüfung herrausgefunden wird, dass die Referenz null ist, soll sie in einem bestimmten Fall doch
+     * einen Wert zurückgeben (siehe [ChangesAdded]).
+     */
+    protected abstract fun getNullEntries(firstPlan: RepresentationPlan): Array<DSBEvent>
 
     /**Hilfsmethode zum Erstellen der Referenzen zwischen Plänen*/
     private fun getPlanReferences(): Map<RepresentationPlan, RepresentationPlan?> {
-        return getReferences(newPlans, oldPlans, RepresentationPlan::date)
+        return getReferences(firstPlans, secondPlans, RepresentationPlan::date)
     }
 
     /**Hilfsmethode zum Erstellen der Referenzen zwischen Gruppendaten*/
-    private fun getGroupDataReferences(newDataArray: Array<GroupData>, oldDataArray: Array<GroupData>?): Map<GroupData, GroupData?> {
-        return getReferences(newDataArray, oldDataArray, GroupData::groupID)
+    private fun getGroupDataReferences(firstDataArray: Array<GroupData>, secondDataArray: Array<GroupData>?): Map<GroupData, GroupData?> {
+        return getReferences(firstDataArray, secondDataArray, GroupData::groupID)
     }
 
     /**Hilfsmethode zum Erstellen der Referenzen zwischen Einträgen*/
-    private fun getEntryReferences(newEntries: Array<GroupEntry>, oldEntries: Array<GroupEntry>?): Map<GroupEntry, GroupEntry?>{
-       hasMultipleTeachersAtSameTimeAndSubject(newEntries)
+    private fun getEntryReferences(firstEntries: Array<GroupEntry>, secondEntries: Array<GroupEntry>?): Map<GroupEntry, GroupEntry?>{
+        //Überprüfung, ob ein Fach und eine Stunde (z.B. bei Gruppenteilung) mehreren Lehrern zugeordnet sind.
+        /*Es wird deshalb das nur bei dieser Überprüfung durchgeführt, da die aufgerufene Methode fehleranfälliger ist. (Es werden Abstriche bei dem DSBEditEvent gemacht,
+        der Lehrer wird nicht mehr angezeigt, wenn er geändert wird.)*/
+       if(hasMultipleTeachersAtSameTimeAndSubject(firstEntries)){
+           //Nun wird ein Teil des "teachers" als weiterer Primärschlüssel verwendet und zurückgegeben.
+           return getDuplicationFreeEntryReferences(firstEntries, secondEntries)
+       }
 
-        return getReferences(newEntries, oldEntries){
-            newEntry, oldEntry -> (newEntry.hour == oldEntry.hour && newEntry.subject == oldEntry.subject)
+        //Die Referenz wird zurückgegeben
+        return getReferences(firstEntries, secondEntries){
+            firstEntry, secondEntry -> (firstEntry.hour == secondEntry.hour && firstEntry.subject == secondEntry.subject /*&& firstEntry.teacher.split("→").first() == secondEntry.teacher.split("→").first()*/)
         }
     }
 
-    private fun <E> getReferences(new: Array<E>, old: Array<E>?, predicate: (E, E) -> Boolean ): Map<E, E?>{
+    /**
+     * Hilfsmethode zum Erhalten der Referenzen zwischen zwei Feldern, mithilfe eines Predicates zum Vergleichen (mehrere Werte und mehrere Bedingungen).
+     */
+    private fun <E> getReferences(first: Array<E>, second: Array<E>?, predicate: (E, E) -> Boolean ): Map<E, E?>{
+        //Erstellen einer Result-Map
         val result = mutableMapOf<E, E?>()
 
-        for(newEntry in new){
-            val oldEntry = old?.firstOrNull{predicate(newEntry, it)}
-            result[newEntry] = oldEntry
+        //Iteration durch jeden neuen Eintrag
+        for(firstEntry in first){
+            //Initialisierung von dem alten Eintrag, es wird nach dem Eintrag gefiltert, der genau gleich ist.
+            val secondEntry = second?.firstOrNull{predicate(firstEntry, it)}
+            result[firstEntry] = secondEntry
         }
         return result
     }
 
-    private fun <E> getReferences(new: Array<E>, old: Array<E>?, property: KProperty1<E, Any>): Map<E, E?>{
+    /**
+     * Hilfsmethode zum Erhalten der Referenzen zwischen zwei Feldern, mithilfe einer Property zum Vergleichen (ein Wert und eine Bedingung).
+     */
+    private fun <E> getReferences(first: Array<E>, second: Array<E>?, property: KProperty1<E, Any>): Map<E, E?>{
         val result = mutableMapOf<E, E?>()
 
-        for(newEntry in new){
-            val oldEntry = old?.firstOrNull{property.get(it) == property.get(newEntry)}
-            result[newEntry] = oldEntry
+        for(firstEntry in first){
+            val secondEntry = second?.firstOrNull{property.get(it) == property.get(firstEntry)}
+            result[firstEntry] = secondEntry
         }
         return result
     }
 
 
+    /**
+     * Hilfsmethode um die Referenzen mit einem zusätzlichen Primärschlüssel (Teil des Lehrers) zu bekommen.
+     */
+    private fun getDuplicationFreeEntryReferences(firstEntries: Array<GroupEntry>, secondEntries: Array<GroupEntry>?): Map<GroupEntry, GroupEntry?>{
+        return getReferences(firstEntries, secondEntries){
+                firstEntry, secondEntry -> (firstEntry.hour == secondEntry.hour && firstEntry.subject == secondEntry.subject && firstEntry.teacher.split("→").first() == secondEntry.teacher.split("→").first())
+        }
 
-
-    private fun getDuplicationFreeEntryReferences(newEntries: Array<GroupEntry>, oldEntries: Array<GroupEntry>?): Map<GroupEntry, GroupEntry?>{
-
-
-        return emptyMap()
     }
 
 
-
-    @Suppress("Test!!!")
+    /**
+     * Hilfsmethode zum Überprüfen, ob eine GroupEntries-Liste Doppelungen bzgl. des Fachs und der Stunde aufzuweisen hat.
+     */
     private fun hasMultipleTeachersAtSameTimeAndSubject(groupEntries: Array<GroupEntry>): Boolean {
+        //Erstellen eines groupierten Referenzobjekts: 1 Stunde → 1 Fach (Falls 2 Mal selbes Fach vorhanden, 2 Fach)
         val entriesByHourAndSubject = groupEntries.groupBy { it.hour to it.subject}
 
-        for ((hourAndSubject, entries) in entriesByHourAndSubject) {
+        //Iteration durch das erstellte Objekt
+        for (entries in entriesByHourAndSubject.values) {
 
+            //Wenn die Größe des Fachs 1 übersteigt, ist eine Dopplung vorhanden.
             if (entries.size > 1) {
-                println(entriesByHourAndSubject)
-                // Es gibt mehrere Einträge zur gleichen Stunde und im selben Fach
-                println("Mehrere Lehrereinträge zur gleichen Zeit und im selben Fach:")
-                entries.forEach { entry ->
-                    println("Hour: ${entry.hour}, Subject: ${entry.subject}, Teacher: ${entry.teacher}")
-                }
+                //Debugging...
+                //println(entriesByHourAndSubject)
+                //println("Mehrere Lehrereinträge zur gleichen Zeit und im selben Fach")
+
+                //Es gibt mehrere Einträge zur gleichen Stunde und im selben Fach
                 return true
             }
         }

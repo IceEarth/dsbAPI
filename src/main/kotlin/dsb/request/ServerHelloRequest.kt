@@ -44,15 +44,12 @@ internal class ServerHelloRequest (username: String, password: String) {
 
 
     init {
-        refreshURLs()
+        refresh()
+        println("${this.urls?.get(0)}  ${this.urls?.get(1)} " )
     }
 
     /**[refresh] sendet eine neue ServerHelloRequest um diese zu eventuell aktualisieren (Falls Änderungen passiert sind.)*/
     fun refresh(){
-        refreshURLs()
-    }
-
-    private fun refreshURLs(){
 
         /**Request senden...*/
         val response = request(this.requestData)
@@ -77,6 +74,8 @@ internal class ServerHelloRequest (username: String, password: String) {
         }
 
         this.urls = result.toTypedArray()
+
+
     }
 
     private fun request(jsonData: String): String {

@@ -4,7 +4,7 @@ import dsb.model.GroupData
 import dsb.model.GroupEntry
 import dsb.model.RepresentationPlan
 
-data class DSBEditEvent(val newEntry: GroupEntry, val oldEntry: GroupEntry, private val editTypes: Array<EditType>, val groupData: GroupData, val representationPlan: RepresentationPlan) : DSBEvent {
+data class DSBEditEvent(val newEntry: GroupEntry, val oldEntry: GroupEntry, val editTypes: Array<EditType>, val groupData: GroupData, val representationPlan: RepresentationPlan) : DSBEvent {
 
    companion object{
 
